@@ -11616,54 +11616,39 @@ coroutine.wrap(YPIT_fake_script)()
 
 
 runFunction(function()
-    local ACDisabler = {Enabled = false}
-    ACDisabler = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
-        Name = "ACDisabler",
+    local FourBigballs = {Enabled = false}
+    FourBigballs = GuiLibrary.ObjectsThatCanBeSaved.UtilityWindow.Api.CreateOptionsButton({
+        Name = "4BigGuysExploitV3",
         Function = function(callback)
-            if callback then
+            if callback then 
                 task.spawn(function()
                     repeat
-                        task.wait()
-                        local args = {
-                            [1] = {
-                                ["partPositions"] = {
-                                    [1] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [2] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [3] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [4] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [5] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [6] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame),
-                                    [7] = Vector3.new(game.entityLibary.character.HumanoidRootPart.CFrame)
-                                },
-                                ["partSize"] = Vector3.new(999999, 0.5, 9999.99999999999999999999)
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("SpiritBridgeEnter"):InvokeServer(unpack(args))
-                    until not ACDisabler.Enabled
+                        task.wait(.1)
+                        game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("SwordSwingMiss"):FireServer({
+							["weapon"] = game:GetService("ReplicatedStorage").Items.diamond_great_hammer,
+							["chargeRatio"] = 1
+						})
+                    until not FourBigballs.Enabled
                 end)
             end
         end
     })
 end)
 
-
 runFunction(function()
-    local FourBigBalls = {Enabled = false}
-    FourBigBalls = GuiLibrary.ObjectsThatCanBeSaved.CombatWindow.Api.CreateOptionsButton({
-        Name = "FourBigBalls",
-        HoverText = "op",
+	local FourBigballs = {Enabled = false}
+    FourBigballs = GuiLibrary.ObjectsThatCanBeSaved.UtilityWindow.Api.CreateOptionsButton({
+        Name = "4DrunkBigGuysExploitV3",
         Function = function(callback)
-            if callback then
+            if callback then 
                 task.spawn(function()
                     repeat
-                        task.wait(0.1)
-                        local args = {
-                            weapon = game:GetService("ReplicatedStorage").items.diamond_great_hammer,
-                            chargeRatio = 1
-                        }
-                        game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("SwordSwingMiss"):FireServer(unpack(args))
-                    until not FourBigBalls.Enabled
+						task.wait()
+						game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("SpiritBridgeEnter"):InvokeServer({
+							["partPositions"] = {},
+							["partSize"] = Vector3.new(999999, .5, 9999.99999999999999999999)
+						})
+					until FourBigballs.Enabled
                 end)
             end
         end
