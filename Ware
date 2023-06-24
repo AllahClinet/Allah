@@ -11428,7 +11428,7 @@ end)
 local allowed_hwids = {
     "A594F084-3155-43DD-90D2-1B3E260DFDCF", -- Owner
     "8338B668-D021-4B5D-90E1-6D1D9119EBF", -- Salad
-    "", --Ex
+    "AFA592F2-0DA1-4561-B119-4FB06533840C", --Ex
     "", --
     "", --
     "", --
@@ -11446,7 +11446,7 @@ for i, v in pairs(allowed_hwids) do
 end
 
 if not is_hwid_allowed then
-    game.Players.LocalPlayer:Kick("not whitelisted bruh")
+    game.Players.LocalPlayer:Kick("imagen no whitelist LOL")
 end
 
   local hpbar = {Enabled = false}
