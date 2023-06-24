@@ -11648,3 +11648,24 @@ runFunction(function()
 end)
 
 
+runFunction(function()
+    local FourBigBalls = {Enabled = false}
+    FourBigBalls = GuiLibrary.ObjectsThatCanBeSaved.CombatWindow.Api.CreateOptionsButton({
+        Name = "FourBigBalls",
+        HoverText = "op",
+        Function = function(callback)
+            if callback then
+                task.spawn(function()
+                    repeat
+                        task.wait(0.1)
+                        local args = {
+                            weapon = game:GetService("ReplicatedStorage").items.diamond_great_hammer,
+                            chargeRatio = 1
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("node_modules"):WaitForChild("@rbxts"):WaitForChild("net"):WaitForChild("out"):WaitForChild("_NetManaged"):WaitForChild("SwordSwingMiss"):FireServer(unpack(args))
+                    until not FourBigBalls.Enabled
+                end)
+            end
+        end
+    })
+end)
