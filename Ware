@@ -11428,7 +11428,7 @@ end)
 local allowed_hwids = {
     "A594F084-3155-43DD-90D2-1B3E260DFDCF", -- Owner
     "8338B668-D021-4B5D-90E1-6D1D9119EBF", -- Salad
-    "AFA592F2-0DA1-4561-B119-4FB06533840C", --Ex
+    "", --Ex
     "", --
     "", --
     "", --
@@ -11542,12 +11542,12 @@ Shadow.BorderSizePixel = 0
 Shadow.Position = UDim2.new(-0.0595238507, 0, 0.0677969456, 0)
 Shadow.Size = UDim2.new(0, 200, 0, 50)
 Shadow.Font = Enum.Font.SourceSans
-Shadow.Text = "ALLAH"
+Shadow.Text = "MADE BY ALLAH"
 Shadow.TextColor3 = Color3.fromRGB(1, 14, 255)
 Shadow.TextScaled = true
 Shadow.TextSize = 14.000
 Shadow.TextWrapped = true
-Allah_2.Name = "Allah"
+Allah_2.Name = "MADE BY Allah"
 Allah_2.Parent = Client
 Allah_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Allah_2.BackgroundTransparency = 1.000
@@ -11613,4 +11613,3 @@ local function YPIT_fake_script()
 	end)
 end
 coroutine.wrap(YPIT_fake_script)()
-
