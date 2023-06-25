@@ -11632,5 +11632,5 @@ for i, v in pairs(allowed_hwids) do
 end
 
 if not is_hwid_allowed then
-    game.Players.LocalPlayer:Kick("Get trlled LOOL")
+    game.Players.LocalPlayer:Kick("Get trolled LOOL")
 end
