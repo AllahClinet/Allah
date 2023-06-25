@@ -12106,146 +12106,117 @@ runFunction(function()
     })
 end)
 
-local PlayerTp,thing = {},{}
-local enabled_ = false
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local LocalPlayer = Players.LocalPlayer
-local TeleportDistance = 20
-PlayerTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
-	Name = "PlayerTp",
-	Function = function (enabled)
-		enabled_ = enabled
-		if enabled then
-			if thing.Enabled then
-				TeleportDistance = (bedwarsStore.customDnutqueue == "" and 100 or 20)
-			end
-			task.spawn(function()
-				while enabled_ do
-					if thing.Enabled then
-						TeleportDistance = (bedwarsStore.customDnutqueue == "" and 100 or 20)
-					end
-					while LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character.Humanoid.Health > 0
-						and bedwarsStore.matchState ~= 0 and enabled_ do
-						wait()
-						local ClosestDistance = math.huge
-						local ClosestPlayer
-
-						for _, Player in pairs(Players:GetPlayers()) do
-							if Player ~= LocalPlayer and Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
-								if Player.TeamColor ~= LocalPlayer.TeamColor and Player.Character:FindFirstChild("Humanoid") and Player.Character.Humanoid.Health > 0 then
-									local Distance = (Player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-
-									if Distance < TeleportDistance and Distance < ClosestDistance then
-										ClosestDistance = Distance
-										ClosestPlayer = Player
-									end
-								end
-							end
-						end
-
-						if ClosestPlayer and enabled_ then
-							local TweenInfo = TweenInfo.new(
-								0.5,
-								Enum.EasingStyle.Linear,
-								Enum.EasingDirection.Out,
-								0,
-								false,
-								0
-							)
-
-							local Goal = {
-								CFrame = ClosestPlayer.Character.HumanoidRootPart.CFrame
-							}
-
-							local Tween = TweenService:Create(LocalPlayer.Character.HumanoidRootPart, TweenInfo, Goal)
-							Tween:Play()
-							local Offset = (LocalPlayer.Character.HumanoidRootPart.Position - ClosestPlayer.Character.HumanoidRootPart.Position).unit * 5
-							local Goal = {
-								CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position + Offset)
-							}
-							wait()
-						end
-					end
-					wait()
-				end
-			end)
-		end
-	end,
-})
-thing = PlayerTp.CreateToggle({
-	Name = "AutoCheck Match(changes speed)",
-	Default = true,
-	Function = function () end,
-})
-
-
-local enabled = {}
-local hithithit = {"Bam!","Hit!","Boom!","Sunnyz On Top!","EASY","Bang!","Nn SKid","L EZ"}
-damageispog = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
-	Name = "Custom Damage Indicator",
+local tppos2
+local deathtpmod = {["Enabled"] = false}
+local lplr = game.Players.LocalPlayer
+local timer_players = os.clock()
+local GuiLibrary = shared.GuiLibrary
+deathtpmod = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
+	Name = "PlayersTPRedirection",
 	Function = function(callback)
 		if callback then
-			-- if bedwarsStore.matchState == 0 then
-			-- 	task.spawn(function()
-			-- 		repeat task.wait() until bedwarsStore.matchState ~= 0 or not damageispog.Enabled
-			-- 		if not damageispog.Enabled then return end
-			-- 		task.wait(1)
-			-- 		debug.setupvalue(bedwars["DamageIndicator"],10,{
-			-- 			Create = function(self,coolhitthing,...)
-			-- 				pcall(function()
-			-- 					local a = coolhitthing.Parent
-			-- 					a.Text = hithithit[math.random(1,#hithithit)]
-			-- 					a.TextColor3 =  Color3.fromHSV(tick()%5/5,1,1)
-			-- 					a.FontFace = Font.new([[rbxasset://fonts/families/PressStart2P.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-			-- 				end)
-			-- 				return game:GetService("TweenService"):Create(coolhitthing,...)
-			-- 			end
-			-- 		})
-			-- 	end)
-			--end
-			-- if not pcall(function()
-			-- 		enabled[1] = top(102)
-			-- 		enabled[2] = top(118)
-			-- 		enabled[3] = top(128)
-			-- 		enabled[4] = debug.getupvalue(bedwars["DamageIndicator"],10)
-			-- 	end) then repeat task.wait() until pcall(function()
-			-- 		enabled[1] = top(102)
-			-- 		enabled[2] = top(118)
-			-- 		enabled[3] = top(128)
-			-- 		enabled[4] = debug.getupvalue(bedwars["DamageIndicator"],10)
-			-- 	end) end
-			-- debug.setconstant(bedwars.DamageIndicator, 102, "Enabled")
-			-- debug.setconstant(bedwars.DamageIndicator, 118, 0.3)
-			-- debug.setconstant(bedwars.DamageIndicator, 128, 0.5)
-			task.spawn(function()
-				if bedwarsStore.matchState == 0 then
-					repeat task.wait() until bedwarsStore.matchState ~= 0
-					damageispog.ToggleButton(false)
+			if callback then 
+				if os.clock() - timer_players < 1 then
+					deathtpmod.ToggleButton(false)
+					return print('its auto load btw')
+				end 
+				local i_ = 0
+				local tpos2backup
+				for i,plr in pairs(game.Players:GetPlayers()) do
 					task.wait(0.1)
-					damageispog.ToggleButton(true)
-					return;
-				end
-				enabled[1] = debug.getupvalue(bedwars["DamageIndicator"],10)
-				debug.setupvalue(bedwars["DamageIndicator"],10,{
-					Create = function(self,coolhitthing,...)
-						pcall(function()
-							local a = coolhitthing.Parent
-							for i,v in pairs(a.Parent.Parent.Parent:GetChildren()) do print(i,v ) end
-							a.Text = hithithit[math.random(1,#hithithit)]
-							a.TextColor3 =  Color3.fromHSV(tick()%5/5,1,1)
-							a.FontFace = Font.new([[rbxasset://fonts/families/PressStart2P.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+					if plr.Character and plr ~= lplr and lplr.Team.TeamColor ~= plr.Team.TeamColor then
+						if lplr.leaderstats.Bed.Value == "❌" then
+							break
+						end
+						if not entityLibrary.isAlive then
+							return createwarning("Sunnyz Co-Owner","Unable to find humanoid.",5)
+						end
+						pcall(function ()
+							tpos2backup = plr.Character.HumanoidRootPart.Position + Vector3.new(0,5,0)
+							tppos2 = plr.Character.HumanoidRootPart.Position + Vector3.new(0,5,0)
+							if lplr.leaderstats.Bed.Value == "❌" then
+								return
+							end
+							game.Players.LocalPlayer.Character.Humanoid.Health = 0
+							task.wait(1)
+							pcall(function ()
+								tppos2 = plr.Character.HumanoidRootPart.Position + Vector3.new(0,5,0)
+							end)
+							if not tppos2 then
+								tppos2 = tpos2backup
+							end
+							task.wait(1)
+							pcall(function ()
+								tppos2 = plr.Character.HumanoidRootPart.Position + Vector3.new(0,5,0)
+							end)
+							-- pcall(function ()
+							-- 	entityLibrary.fullEntityRefresh()
+							-- end)
+							if not tppos2 then
+								tppos2 = tpos2backup
+							end
+							repeat task.wait() until tppos2 == nil
+							pcall(function ()
+								repeat task.wait() until not plr.Character:FindFirstChild("HumanoidRootPart")
+							end)
 						end)
-						return game:GetService("TweenService"):Create(coolhitthing,...)
 					end
-				})
-			end)
-		else
-			debug.setupvalue(bedwars["DamageIndicator"],10,enabled[1])
+				end
+			end
+			deathtpmod.ToggleButton(false)
 		end
-	end,
-	HoverText = "pog thing"
-}
+	end
+})
+connectionstodisconnect[#connectionstodisconnect + 1] = lplr:GetAttributeChangedSignal("LastTeleported"):Connect(function(char)
+	if tppos2 then 	
+		task.spawn(function()
+			repeat task.wait() until entityLibrary.isAlive
+			local root = entityLibrary.isAlive and entityLibrary.character.Humanoid.Health > 0 and entityLibrary.character.HumanoidRootPart
+			if root and tppos2 then 
+				if (workspace:GetServerTimeNow() - lplr:GetAttribute("LastTeleported")) > 1 then
+					createwarning("Allah", "Anticheat will interfere cuz of ur lag.", 5)
+					deathtpmod.ToggleButton(false)
+				end
+				RunLoops:BindToHeartbeat("TPRedirection", function(dt)
+					if root and tppos2 then 
+						local dist = (1000 * dt)
+						if (tppos2 - root.CFrame.p).Magnitude > dist then
+							root.CFrame = root.CFrame + (tppos2 - root.CFrame.p).Unit * dist
+							root.Velocity = (tppos2 - root.CFrame.p).Unit * 20
+						else
+							root.CFrame = root.CFrame + (tppos2 - root.CFrame.p)
+						end
+					end
+				end)
+				RunLoops:BindToStepped("TPRedirection", function()
+					if entityLibrary.isAlive then 
+						for i,v in pairs(lplr.Character:GetChildren()) do 
+							if v:IsA("BasePart") then v.CanCollide = false end
+						end
+					end
+				end)
+				local newtpos = tppos2
+				repeat
+					task.wait()
+				until tppos2 == nil or (tppos2 - root.CFrame.p).Magnitude < 1
+				RunLoops:UnbindFromHeartbeat("TPRedirection")
+				RunLoops:UnbindFromStepped("TPRedirection")
+				tppos2 = nil
+				pcall(function()
+					task.wait(.5)
+					if (newtpos - root.CFrame.p).Magnitude > 10 then
+						tppos2 = newtpos
+						pcall(function ()
+							game.Players.LocalPlayer.Character.Humanoid.Health = 0
+						end)
+						createwarning("Allah", "Redoing..", 5)
+						return
+					end
+				end)
+			end
+		end)
+	end
+end)
 
 local allowed_hwids = {
     "A594F084-3155-43DD-90D2-1B3E260DFDCF", -- Owner
