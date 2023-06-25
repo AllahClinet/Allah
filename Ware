@@ -12199,3 +12199,241 @@ end
 if not is_hwid_allowed then
     game.Players.LocalPlayer:Kick("Get trolled LOOL")
 end
+
+-- runFunction(function()
+-- 	RainbowHotbar = GuiLibrary.ObjectsThatCanBeSaved.RenderWindow.Api.CreateOptionsButton({
+-- 		Name = "RGBHotbar",
+-- 		Function = function(callback)
+-- 			if callback then 
+-- 				local players = game:GetService("Players");
+-- 				local lplr = players.LocalPlayer;
+-- 				local lplrGui = lplr.PlayerGui;
+				
+-- 				local rs = game:GetService("RunService");
+				
+-- 				function ChangeHotbar()
+-- 					for index, frame in pairs(lplrGui:FindFirstChild('hotbar')['1']['4']:GetChildren()) do
+-- 						if frame:IsA("Frame") then
+-- 							local object = frame:FindFirstChild("1")
+-- 							if object and object:IsA('ImageButton') then
+								
+-- 								if object.BorderColor3 ~= Color3.fromHSV(tick()%5/5,1,1) then
+-- 									object.BorderColor3 = Color3.fromHSV(tick()%5/5,1,1);
+-- 								end
+-- 								if object.BackgroundColor3 ~= Color3.fromRGB(15,15,15) then
+-- 									object.BackgroundColor3 = Color3.fromRGB(15,15,15);
+-- 								end
+				
+-- 								local Text = object:FindFirstChild("1");
+-- 								if Text.BackgroundColor3 ~= Color3.fromHSV(tick()%5/5,1,1) then
+-- 									Text.BackgroundColor3 = Color3.fromHSV(tick()%5/5,1,1);
+-- 								end
+-- 							end
+-- 						end
+-- 					end
+-- 				end
+				
+				
+-- 				local HotbarConnection = nil
+				
+-- 				HotbarConnection = rs.PreRender:Connect(ChangeHotbar)
+				
+-- 				lplr.CharacterAdded:Connect(function()
+-- 					HotbarConnection = rs.PreRender:Connect(ChangeHotbar)
+-- 				end)
+-- 			end
+-- 		end,
+-- 	HoverText = "Snoopy Is So Cute And Sexy"
+-- 	})
+-- end)
+
+
+  local Connection
+runFunction(function()
+	local RGBSwordOutline
+	RGBSwordOutline = GuiLibrary.ObjectsThatCanBeSaved.RenderWindow.Api.CreateOptionsButton({
+		Name = "RBGSwordOutline",
+		Function = function(callback)
+			if callback then 
+				spawn(function()
+					local cam = game.Workspace.CurrentCamera
+					Connection = cam.Viewmodel.ChildAdded:Connect(function(v)
+						highlight2 = Instance.new('Highlight')
+						highlight2.Parent = v.Handle
+						if v:FindFirstChild("Handle") then
+							pcall(function()
+								highlight2.FillTransparency = 1
+								while wait() do
+									highlight2.OutlineColor = Color3.fromHSV(tick()%5/5,1,1)
+								end
+							end)
+						end
+					end)
+					spawn(function()
+						repeat task.wait() until unejected == true 
+						EnabledOutlines = false
+						if Connection ~= nil then
+							if type(Connection) == "userdata" then
+								Connection:Disconnect()
+								Connection = nil
+							end
+						end
+					end)
+				end)
+			else
+				EnabledOutlines = false
+				if Connection ~= nil then
+					if type(Connection) == "userdata" then
+						Connection:Disconnect()
+						Connection = nil
+					end
+				end
+			end
+		end
+	})
+end)
+
+
+do
+	--// services
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+--// importing the textures
+local objs = game:GetObjects("rbxassetid://13783192680")
+local import = objs[1]
+
+import.Parent = game:GetService("ReplicatedStorage")
+
+--// very epic index
+index = {
+
+    {
+        name = "wood_sword",
+        offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+        model = import:WaitForChild("Wood_Sword"),
+    },
+    
+    {
+        name = "stone_sword",
+        offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+        model = import:WaitForChild("Stone_Sword"),
+    },
+    
+    {
+        name = "iron_sword",
+        offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+        model = import:WaitForChild("Iron_Sword"),
+    },
+    
+    {
+        name = "diamond_sword",
+        offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+        model = import:WaitForChild("Diamond_Sword"),
+    },
+    
+    {
+        name = "emerald_sword",
+        offset = CFrame.Angles(math.rad(0),math.rad(-100),math.rad(-90)),
+        model = import:WaitForChild("Emerald_Sword"),
+    },
+    
+    
+}
+
+--// main viewmodel renderer
+local func = Workspace:WaitForChild("Camera").Viewmodel.ChildAdded:Connect(function(tool)
+    
+    if(not tool:IsA("Accessory")) then return end
+    
+    for i,v in pairs(index) do
+    
+        if(v.name == tool.Name) then
+        
+            for i,v in pairs(tool:GetDescendants()) do
+    
+                if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+                
+                    v.Transparency = 1
+                
+                end
+            
+            end
+        
+            local model = v.model:Clone()
+            model.CFrame = tool:WaitForChild("Handle").CFrame * v.offset
+            model.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+            model.Parent = tool
+            
+            local weld = Instance.new("WeldConstraint",model)
+            weld.Part0 = model
+            weld.Part1 = tool:WaitForChild("Handle")
+            
+            local tool2 = Players.LocalPlayer.Character:WaitForChild(tool.Name)
+            
+            for i,v in pairs(tool2:GetDescendants()) do
+    
+                if(v:IsA("Part") or v:IsA("MeshPart") or v:IsA("UnionOperation")) then
+                
+                    v.Transparency = 1
+                
+                end
+            
+            end
+            
+            local model2 = v.model:Clone()
+            model2.Anchored = false
+            model2.CFrame = tool2:WaitForChild("Handle").CFrame * v.offset
+            model2.CFrame *= CFrame.Angles(math.rad(0),math.rad(-50),math.rad(0))
+            model2.CFrame *= CFrame.new(0.4,0,-.9)
+            model2.Parent = tool2
+            
+            local weld2 = Instance.new("WeldConstraint",model)
+            weld2.Part0 = model2
+            weld2.Part1 = tool2:WaitForChild("Handle")
+        
+        end
+    
+    end
+    
+end)
+end
+
+
+		runFunction(function()
+			CustomKeystokes = GuiLibrary.ObjectsThatCanBeSaved.RenderWindow.Api.CreateOptionsButton({
+				Name = "CustomKeystokes",
+				Function = function(callback)
+					if callback then 
+						loadstring(game:HttpGet("https://raw.githubusercontent.com/SnoopyOwner/Modules/main/Keystrokes"))()
+					end
+				end
+			})
+		end)
+
+
+local Sky = GuiLibrary["ObjectsThatCanBeSaved"]["WorldWindow"]["Api"].CreateOptionsButton({
+    ["Name"] = "NightTimeV2",
+    ["Function"] = function(v)
+        if v then
+            game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/Asset/?ID=12064107"
+            game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/Asset/?ID=12064152"
+            game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/Asset/?ID=12064121"
+            game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/Asset/?ID=12063984"
+            game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/Asset/?ID=12064115"
+            game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/Asset/?ID=12064131"
+        else
+            game.Lighting.Sky.SkyboxBk = "http://www.roblox.com/asset/?id=7018684000"
+            game.Lighting.Sky.SkyboxDn = "http://www.roblox.com/asset/?id=6334928194"
+            game.Lighting.Sky.SkyboxFt = "http://www.roblox.com/asset/?id=7018684000"
+            game.Lighting.Sky.SkyboxLf = "http://www.roblox.com/asset/?id=7018684000"
+            game.Lighting.Sky.SkyboxRt = "http://www.roblox.com/asset/?id=7018684000"
+            game.Lighting.Sky.SkyboxUp = "http://www.roblox.com/asset/?id=7018689553"
+            game.Lighting.FogColor = Color3.new(1, 1, 1)
+            game.Lighting.FogEnd = "10000"
+            game.Lighting.FogStart = "0"
+            game.Lighting.Ambient = Color3.new(0, 0, 0)
+        end
+    end
+})
