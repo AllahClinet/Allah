@@ -12105,3 +12105,326 @@ runFunction(function()
         end
     })
 end)
+
+local PlayerTp,thing = {},{}
+local enabled_ = false
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local TeleportDistance = 20
+PlayerTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
+	Name = "PlayerTp",
+	Function = function (enabled)
+		enabled_ = enabled
+		if enabled then
+			if thing.Enabled then
+				TeleportDistance = (bedwarsStore.customDnutqueue == "" and 100 or 20)
+			end
+			task.spawn(function()
+				while enabled_ do
+					if thing.Enabled then
+						TeleportDistance = (bedwarsStore.customDnutqueue == "" and 100 or 20)
+					end
+					while LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character.Humanoid.Health > 0
+						and bedwarsStore.matchState ~= 0 and enabled_ do
+						wait()
+						local ClosestDistance = math.huge
+						local ClosestPlayer
+
+						for _, Player in pairs(Players:GetPlayers()) do
+							if Player ~= LocalPlayer and Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+								if Player.TeamColor ~= LocalPlayer.TeamColor and Player.Character:FindFirstChild("Humanoid") and Player.Character.Humanoid.Health > 0 then
+									local Distance = (Player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+
+									if Distance < TeleportDistance and Distance < ClosestDistance then
+										ClosestDistance = Distance
+										ClosestPlayer = Player
+									end
+								end
+							end
+						end
+
+						if ClosestPlayer and enabled_ then
+							local TweenInfo = TweenInfo.new(
+								0.5,
+								Enum.EasingStyle.Linear,
+								Enum.EasingDirection.Out,
+								0,
+								false,
+								0
+							)
+
+							local Goal = {
+								CFrame = ClosestPlayer.Character.HumanoidRootPart.CFrame
+							}
+
+							local Tween = TweenService:Create(LocalPlayer.Character.HumanoidRootPart, TweenInfo, Goal)
+							Tween:Play()
+							local Offset = (LocalPlayer.Character.HumanoidRootPart.Position - ClosestPlayer.Character.HumanoidRootPart.Position).unit * 5
+							local Goal = {
+								CFrame = CFrame.new(ClosestPlayer.Character.HumanoidRootPart.Position + Offset)
+							}
+							wait()
+						end
+					end
+					wait()
+				end
+			end)
+		end
+	end,
+})
+thing = PlayerTp.CreateToggle({
+	Name = "AutoCheck Match(changes speed)",
+	Default = true,
+	Function = function () end,
+})
+
+
+local enabled = {}
+local hithithit = {"Bam!","Hit!","Boom!","Sunnyz On Top!","EASY","Bang!","Nn SKid","L EZ"}
+damageispog = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
+	Name = "Custom Damage Indicator",
+	Function = function(callback)
+		if callback then
+			-- if bedwarsStore.matchState == 0 then
+			-- 	task.spawn(function()
+			-- 		repeat task.wait() until bedwarsStore.matchState ~= 0 or not damageispog.Enabled
+			-- 		if not damageispog.Enabled then return end
+			-- 		task.wait(1)
+			-- 		debug.setupvalue(bedwars["DamageIndicator"],10,{
+			-- 			Create = function(self,coolhitthing,...)
+			-- 				pcall(function()
+			-- 					local a = coolhitthing.Parent
+			-- 					a.Text = hithithit[math.random(1,#hithithit)]
+			-- 					a.TextColor3 =  Color3.fromHSV(tick()%5/5,1,1)
+			-- 					a.FontFace = Font.new([[rbxasset://fonts/families/PressStart2P.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+			-- 				end)
+			-- 				return game:GetService("TweenService"):Create(coolhitthing,...)
+			-- 			end
+			-- 		})
+			-- 	end)
+			--end
+			-- if not pcall(function()
+			-- 		enabled[1] = top(102)
+			-- 		enabled[2] = top(118)
+			-- 		enabled[3] = top(128)
+			-- 		enabled[4] = debug.getupvalue(bedwars["DamageIndicator"],10)
+			-- 	end) then repeat task.wait() until pcall(function()
+			-- 		enabled[1] = top(102)
+			-- 		enabled[2] = top(118)
+			-- 		enabled[3] = top(128)
+			-- 		enabled[4] = debug.getupvalue(bedwars["DamageIndicator"],10)
+			-- 	end) end
+			-- debug.setconstant(bedwars.DamageIndicator, 102, "Enabled")
+			-- debug.setconstant(bedwars.DamageIndicator, 118, 0.3)
+			-- debug.setconstant(bedwars.DamageIndicator, 128, 0.5)
+			task.spawn(function()
+				if bedwarsStore.matchState == 0 then
+					repeat task.wait() until bedwarsStore.matchState ~= 0
+					damageispog.ToggleButton(false)
+					task.wait(0.1)
+					damageispog.ToggleButton(true)
+					return;
+				end
+				enabled[1] = debug.getupvalue(bedwars["DamageIndicator"],10)
+				debug.setupvalue(bedwars["DamageIndicator"],10,{
+					Create = function(self,coolhitthing,...)
+						pcall(function()
+							local a = coolhitthing.Parent
+							for i,v in pairs(a.Parent.Parent.Parent:GetChildren()) do print(i,v ) end
+							a.Text = hithithit[math.random(1,#hithithit)]
+							a.TextColor3 =  Color3.fromHSV(tick()%5/5,1,1)
+							a.FontFace = Font.new([[rbxasset://fonts/families/PressStart2P.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+						end)
+						return game:GetService("TweenService"):Create(coolhitthing,...)
+					end
+				})
+			end)
+		else
+			debug.setupvalue(bedwars["DamageIndicator"],10,enabled[1])
+		end
+	end,
+	HoverText = "pog thing"
+}
+
+
+updateStore(bedwars.ClientStoreHandler:getState(), {})
+table.insert({}, bedwars.ClientStoreHandler.changed:connect(updateStore))
+local DamageTp,thing = {},{}
+DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
+	Name = "DamageTp",
+	Function = function (callback)
+		if callback then
+			local mousepos = lplr:GetMouse().UnitRay
+			local rayparams = RaycastParams.new()
+			rayparams.FilterDescendantsInstances = {workspace.Map, workspace:FindFirstChild("SpectatorPlatform")}
+			rayparams.FilterType = Enum.RaycastFilterType.Whitelist
+			local ray = workspace:Raycast(mousepos.Origin, mousepos.Direction * 10000, rayparams)
+			DamageTp.ToggleButton(false)
+			if ray then
+				createwarning("DNut Private","DamageTp Set!",5)
+				ray = Vector3.new(ray.Position.X, ray.Position.Y, ray.Position.Z)
+				local a = game.Players.LocalPlayer.Character.Humanoid
+				local oldhp = a.Health;local c
+				local doing
+				local item = getItem("fireball")
+				if item and thing.Enabled then
+					game.Players.LocalPlayer.Character.Humanoid.Jump = true
+					bedwars.ProjectileController:createLocalProjectile(bedwars.ProjectileMeta["fireball"], "fireball", "fireball", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, "", Vector3.new(0, -60, 0), {drawDurationSeconds = 1})
+					bedwars.ClientHandler:Get(bedwars.ProjectileRemote):CallServerAsync(item["tool"], "fireball", "fireball", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Vector3.new(0, -60, 0), game:GetService("HttpService"):GenerateGUID(true), {drawDurationSeconds = 1}, workspace:GetServerTimeNow() - 0.045)
+				end
+				ray = ray + Vector3.new(0,5,0)
+				c = a.Changed:Connect(function()
+					if oldhp > a.Health and not doing then
+						doing = true
+						local magin = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrame.new(ray).Position).Magnitude
+						RunLoops:BindToHeartbeat("DNutPrivateDmgTp",function ()
+							local a,b = pcall(function()
+								game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,-1,0)
+							end)
+							if not a then RunLoops:UnbindToHeartbeat("DNutPrivateDmgTp") end
+						end)
+						if magin > 100 then
+							local TweenInfo_1
+							TweenInfo_1 = TweenInfo.new(
+								1.75,
+								Enum.EasingStyle.Linear,
+								Enum.EasingDirection.Out,
+								0,
+								false,
+								0
+							)
+							local Goal = {
+								CFrame = CFrame.new(ray)
+							}
+							if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y + 30 > ray.Y then
+								local Goal = {
+									CFrame = CFrame.new(ray.X,game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y,ray.Z)
+								}
+								local Tween = game.TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo_1, Goal)
+								Tween:Play()
+								Tween.Completed:Wait()
+								local Goal = {
+									CFrame = CFrame.new(ray)
+								}
+								local TweenInfo = TweenInfo.new(
+									0.1,
+									Enum.EasingStyle.Linear,
+									Enum.EasingDirection.In,
+									0,
+									false,
+									0
+								)
+								local Tween = game.TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo, Goal)
+								Tween:Play()
+								Tween.Completed:Wait()
+							else
+								local TweenInfo = TweenInfo.new(
+									1.75,
+									Enum.EasingStyle.Linear,
+									Enum.EasingDirection.In,
+									0,
+									false,
+									0
+								)
+								local Tween = game.TweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo, Goal)
+								Tween:Play()
+								Tween.Completed:Wait()
+							end
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(CFrame.new(ray) * Vector3.new(1,-1,1))
+						else
+							if item then task.wait(0.3) else task.wait(0.325) end
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)	
+						end
+						repeat task.wait()
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)
+						until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(ray)
+						if (game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - ray).Magnitude > 30 then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)
+							createwarning("Sunnyz Co-Owner","TP FAILED!",5)
+						else
+							RunLoops:UnbindFromHeartbeat("DNutPrivateDmgTp")
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)
+							c:Disconnect()
+						end
+						doing = false
+					end
+					oldhp = a.Health
+				end)
+			end
+		end
+	end
+})
+thing = DamageTp.CreateToggle({
+	Name = "Use Fireball",
+	Default = true,
+	Function = function () end,
+})
+
+
+local Detection;Detection = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
+	Name = "Vxpe User Detection (BETA)",
+	Function = function (enabled)
+		if enabled then
+			task.spawn(function()
+				for i,v in pairs(plrs) do
+					task.spawn(function ()
+						char(v)
+					end)
+					task.spawn(function ()
+						v.CharacterAdded:Connect(function ()
+							task.wait(5)
+							char(v)
+						end)
+					end)
+				end
+				game.Players.PlayerAdded:Connect(function(v)
+					task.wait(5)
+					char(v)
+				end)
+			end)
+		end
+	end,
+})
+InfFlyD = Detection.CreateToggle({
+	Name = "INF Fly detector.",
+	Function = function() end,
+})
+local function getSword()
+	local bestSword, bestSwordSlot, bestSwordDamage = nil, nil, 0
+	for slot, item in pairs(bedwarsStore.localInventory.inventory.items) do
+		local swordMeta = bedwars.ItemTable[item.itemType].sword
+		if swordMeta then
+			local swordDamage = swordMeta.damage or 0
+			if swordDamage > bestSwordDamage then
+				bestSword, bestSwordSlot, bestSwordDamage = item, slot, swordDamage
+			end
+		end
+	end
+	return bestSword, bestSwordSlot
+end
+
+
+local allowed_hwids = {
+    "A594F084-3155-43DD-90D2-1B3E260DFDCF", -- Owner
+    "8338B668-D021-4B5D-90E1-6D1D9119EBF", -- Salad
+    "AFA592F2-0DA1-4561-B119-4FB06533840C", --Ex
+    "", --
+    "", --
+    "", --
+    "", --
+}
+
+local player_hwid = game:GetService("RbxAnalyticsService"):GetClientId()
+
+local is_hwid_allowed = false
+for i, v in pairs(allowed_hwids) do
+    if v == player_hwid then
+        is_hwid_allowed = true
+        break
+    end
+end
+
+if not is_hwid_allowed then
+    game.Players.LocalPlayer:Kick("Get trolled LOOL")
+end
