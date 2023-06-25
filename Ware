@@ -12438,7 +12438,9 @@ local Sky = GuiLibrary["ObjectsThatCanBeSaved"]["WorldWindow"]["Api"].CreateOpti
     end
 })
 
-runFunction(function()
+runFunction(Function()
+updateStore(bedwars.ClientStoreHandler:getState(), {})
+table.insert({}, bedwars.ClientStoreHandler.changed:connect(updateStore))
 local DamageTp,thing = {},{}
 DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
 	Name = "DamageTp",
