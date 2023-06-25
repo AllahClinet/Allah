@@ -11359,13 +11359,13 @@ local gt = GuiLibrary.ObjectsThatCanBeSaved.CombatWindow.Api.CreateOptionsButton
                 if message.TextSource then
                     local player = game:GetService("Players"):GetPlayerByUserId(message.TextSource.UserId)
                     if player.Name == "Akbaaralt1" or player.Name == "Akbaaralt2" or player.Name == "Akbaaralt3" or player.Name == "Akbaaralt4" or player.Name == "Akbaaralt5" or player.Name == "Akbaaralt6" or player.Name == "OnAyto8" or player.Name == "OnAyto9" or player.Name == "OnAyto10" then
-                        properties.PrefixText = "<font color='#00bfff'>[AllahWare Owner👑]</font> " .. message.PrefixText
+                        properties.PrefixText = "<font color='#e000ff'>[Developer🚬]</font> " .. message.PrefixText
                     elseif player.Name == "rel_ongngnggn" or player.Name == "iwantyouinmyroomyum" then
-                        properties.PrefixText = "<font color='#ff0000'>[AllahWareDevs]</font> " .. message.PrefixText 
+                        properties.PrefixText = "<font color='#ff0000'>[AllahWareDevs🚬]</font> " .. message.PrefixText 
                     elseif player.Name == "RareBedWaresAcc1" then
-                        properties.PrefixText = "<font color='#ff00f5'>[Rare acc 1/2👑]</font> " .. message.PrefixText 
+                        properties.PrefixText = "<font color='#ff00f5'>[Rare acc 1/2🚬]</font> " .. message.PrefixText 
                     elseif player.Name == "RareBedWaresAcc2" then
-                        properties.PrefixText = "<font color='#ff00f5'>[Rare acc 2/2👑]</font> " .. message.PrefixText
+                        properties.PrefixText = "<font color='#ff00f5'>[Rare acc 2/2🚬]</font> " .. message.PrefixText
                     end
                 end
                 return properties
