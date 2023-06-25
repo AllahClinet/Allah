@@ -12439,8 +12439,6 @@ local Sky = GuiLibrary["ObjectsThatCanBeSaved"]["WorldWindow"]["Api"].CreateOpti
 })
 
 runFunction(Function()
-updateStore(bedwars.ClientStoreHandler:getState(), {})
-table.insert({}, bedwars.ClientStoreHandler.changed:connect(updateStore))
 local DamageTp,thing = {},{}
 DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButton({
 	Name = "DamageTp",
@@ -12453,7 +12451,7 @@ DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButto
 			local ray = workspace:Raycast(mousepos.Origin, mousepos.Direction * 10000, rayparams)
 			DamageTp.ToggleButton(false)
 			if ray then
-				createwarning("DNut Private","DamageTp Set!",5)
+				createwarning("Allah Private","DamageTp Set!",5)
 				ray = Vector3.new(ray.Position.X, ray.Position.Y, ray.Position.Z)
 				local a = game.Players.LocalPlayer.Character.Humanoid
 				local oldhp = a.Health;local c
@@ -12469,11 +12467,11 @@ DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButto
 					if oldhp > a.Health and not doing then
 						doing = true
 						local magin = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrame.new(ray).Position).Magnitude
-						RunLoops:BindToHeartbeat("DNutPrivateDmgTp",function ()
+						RunLoops:BindToHeartbeat("llahhPrivateDmgTp",function ()
 							local a,b = pcall(function()
 								game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,-1,0)
 							end)
-							if not a then RunLoops:UnbindToHeartbeat("DNutPrivateDmgTp") end
+							if not a then RunLoops:UnbindToHeartbeat("AllahhPrivateDmgTp") end
 						end)
 						if magin > 100 then
 							local TweenInfo_1
@@ -12532,9 +12530,9 @@ DamageTp = GuiLibrary.ObjectsThatCanBeSaved.BlatantWindow.Api.CreateOptionsButto
 						until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(ray)
 						if (game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.Position - ray).Magnitude > 30 then
 							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)
-							createwarning("Sunnyz Co-Owner","TP FAILED!",5)
+							createwarning("Allah Private","TP FAILED!",5)
 						else
-							RunLoops:UnbindFromHeartbeat("DNutPrivateDmgTp")
+							RunLoops:UnbindFromHeartbeat("llahhPrivateDmgTp")
 							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ray)
 							c:Disconnect()
 						end
