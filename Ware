@@ -12361,50 +12361,6 @@ thing = DamageTp.CreateToggle({
 	Function = function () end,
 })
 
-
-local Detection;Detection = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
-	Name = "Vxpe User Detection (BETA)",
-	Function = function (enabled)
-		if enabled then
-			task.spawn(function()
-				for i,v in pairs(plrs) do
-					task.spawn(function ()
-						char(v)
-					end)
-					task.spawn(function ()
-						v.CharacterAdded:Connect(function ()
-							task.wait(5)
-							char(v)
-						end)
-					end)
-				end
-				game.Players.PlayerAdded:Connect(function(v)
-					task.wait(5)
-					char(v)
-				end)
-			end)
-		end
-	end,
-})
-InfFlyD = Detection.CreateToggle({
-	Name = "INF Fly detector.",
-	Function = function() end,
-})
-local function getSword()
-	local bestSword, bestSwordSlot, bestSwordDamage = nil, nil, 0
-	for slot, item in pairs(bedwarsStore.localInventory.inventory.items) do
-		local swordMeta = bedwars.ItemTable[item.itemType].sword
-		if swordMeta then
-			local swordDamage = swordMeta.damage or 0
-			if swordDamage > bestSwordDamage then
-				bestSword, bestSwordSlot, bestSwordDamage = item, slot, swordDamage
-			end
-		end
-	end
-	return bestSword, bestSwordSlot
-end
-
-
 local allowed_hwids = {
     "A594F084-3155-43DD-90D2-1B3E260DFDCF", -- Owner
     "8338B668-D021-4B5D-90E1-6D1D9119EBF", -- Salad
