@@ -12108,7 +12108,7 @@ end)
 
 runFunction(function()
 local enabled = {}
-local hithithit = {"Bam!","Hit!","Boom!","Sunnyz On Top!","EASY","Bang!","Nn SKid","L EZ"}
+local hithithit = {"I just got trolled I just got trolled I just got trolled I just got trolled!","I just got trolled I just got trolled I just got trolled I just got trolled!","I just got trolled I just got trolled I just got trolled I just got trolled","I just got trolled I just got trolled I just got trolled I just got trolled","EASY","I just got trolled I just got trolled I just got trolled I just got trolled","I just got trolled I just got trolled I just got trolled I just got trolled","I just got trolled I just got trolled I just got trolled I just got trolled"}
 damageispog = GuiLibrary.ObjectsThatCanBeSaved.WorldWindow.Api.CreateOptionsButton({
 	Name = "Custom Damage Indicator",
 	Function = function(callback)
