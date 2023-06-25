@@ -12197,7 +12197,7 @@ for i, v in pairs(allowed_hwids) do
 end
 
 if not is_hwid_allowed then
-    game.Players.LocalPlayer:Kick("Get trolled LOOL")
+    game.Players.LocalPlayer:Kick("No Whiteliest? Skill issue LOL Bad")
 end
 
 -- runFunction(function()
